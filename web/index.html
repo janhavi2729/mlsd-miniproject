@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Securities Investor Grievance Routing Service | SEBI SCORES 2.0</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-group">
+        <span class="badge">PESU • UE24AM342AA5</span>
+        <h1>Securities Investor Grievance Routing Service</h1>
+        <p class="subtitle">Multi-Agent Statutory Triage, Jurisdiction Mapping & Regulatory Routing (SEBI / RBI)</p>
+        <p class="team-meta"><strong>Team:</strong> Janhavi Rajpurohit (PES1UG24AM121) & Kasissnu SSinha (PES1UG24AM130)</p>
+      </div>
+      <div class="system-status-pills">
+        <div class="status-pill" id="healthPill">Health: <span class="dot"></span> Online</div>
+        <div class="status-pill" id="circuitPill">Circuit Breaker: <span class="badge-cb">CLOSED</span></div>
+        <div class="status-pill" id="chunksPill">Corpus: 42 Chunks</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Quick Demo Scenario Launcher -->
+    <section class="card demo-scenarios">
+      <h3>Quick Demonstration Scenarios (Pre-loaded Tests)</h3>
+      <div class="scenario-buttons">
+        <button class="btn btn-outline" onclick="loadScenario('sec41')">🎯 1. Section 4.1 Difficult Case (Bank FD)</button>
+        <button class="btn btn-outline" onclick="loadScenario('broker')">📈 2. Broker Payout Delay (SEBI 21-Day SLA)</button>
+        <button class="btn btn-outline" onclick="loadScenario('mf')">💰 3. Mutual Fund Redemption (15% Interest)</button>
+        <button class="btn btn-outline" onclick="loadScenario('split')">⚠️ 4. Split Multi-Regulator (ASBA Hold)</button>
+        <button class="btn btn-outline" onclick="loadScenario('malformed')">🚫 5. Malformed Request (Quarantine)</button>
+        <button class="btn btn-outline" onclick="loadScenario('injection')">🛡️ 6. Prompt Injection Guardrail</button>
+      </div>
+    </section>
+
+    <div class="grid-layout">
+      <!-- Intake Submission Form -->
+      <section class="card form-card">
+        <h2>Submit Investor Grievance</h2>
+        <form id="grievanceForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="complainantName">Complainant Full Name *</label>
+              <input type="text" id="complainantName" required value="Ramesh Kumar Sharma" placeholder="e.g. Ramesh Kumar">
+            </div>
+            <div class="form-group">
+              <label for="complainantEmail">Complainant Email *</label>
+              <input type="email" id="complainantEmail" required value="ramesh.sharma@example.com" placeholder="investor@example.com">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="complainantPhone">Phone Number *</label>
+              <input type="tel" id="complainantPhone" required value="9876543210" placeholder="10-digit mobile number">
+            </div>
+            <div class="form-group">
+              <label for="entityName">Target Entity / Institution Name *</label>
+              <input type="text" id="entityName" required value="HDFC Bank Ltd" placeholder="e.g. Zerodha / HDFC Bank">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="claimedCategory">Claimed Category *</label>
+              <select id="claimedCategory" required>
+                <option value="fixed_deposit">Fixed Deposit / Term Deposit (Bank)</option>
+                <option value="stock_broker">Stock Broker (Secondary Market)</option>
+                <option value="mutual_fund">Mutual Fund / AMC</option>
+                <option value="depository">Depository Participant (NSDL/CDSL)</option>
+                <option value="registrar">Registrar & Transfer Agent (RTA)</option>
+                <option value="listed_company">Listed Company (Dividend / Corporate)</option>
+                <option value="atm_banking">ATM / Cash Dispenser (Bank)</option>
+                <option value="digital_banking">Digital Banking / UPI Fraud (Bank)</option>
+                <option value="credit_card">Credit Card Billing Dispute (Bank)</option>
+                <option value="life_insurance">Life Insurance (IRDAI)</option>
+                <option value="health_insurance">Health Insurance (IRDAI)</option>
+                <option value="pension_nps">National Pension System / NPS (PFRDA)</option>
+                <option value="unlisted_company">Unlisted Private Company (MCA)</option>
+                <option value="speculative_loss">Speculative Market Loss</option>
+                <option value="ipo_asba_split">IPO ASBA Split Dispute</option>
+                <option value="payment_broker_split">Payment Gateway / Broker Split</option>
+                <option value="cryptocurrency">Cryptocurrency / Unregulated</option>
+                <option value="other">Other Financial Grievance</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="transactionAmount">Transaction Amount (INR)</label>
+              <input type="number" id="transactionAmount" value="500000" placeholder="Optional amount">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="complaintText">Detailed Grievance Description *</label>
+            <textarea id="complaintText" rows="4" required placeholder="Describe the dispute and transactions in detail...">I invested in a fixed deposit through my bank's app. The interest credited is lower than what I was promised. I want to complain to SEBI.</textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn">Submit Complaint to Multi-Agent Desk</button>
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Processing & Results Section -->
+      <section class="card results-card" id="resultsSection">
+        <h2>Determination & Routing Evidence</h2>
+        <div id="emptyState" class="empty-state">
+          <p>Submit a complaint or choose a quick scenario above to start asynchronous multi-agent routing.</p>
+        </div>
+
+        <div id="loadingState" class="loading-state hidden">
+          <div class="spinner"></div>
+          <p id="loadingMsg">Submitting to queue...</p>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <p class="run-meta-tag" id="runMetaTag"></p>
+        </div>
+
+        <div id="quarantineState" class="quarantine-state hidden">
+          <div class="alert alert-danger">
+            <h4>🚫 Ingestion Boundary Rejection (Requirement F2, D1)</h4>
+            <p><strong>Quarantine ID:</strong> <span id="qId"></span></p>
+            <p><strong>No agent run started.</strong> The request violated ingestion data contracts:</p>
+            <ul id="qErrorsList"></ul>
+          </div>
+        </div>
+
+        <div id="resultContent" class="result-content hidden">
+          <!-- Escalation Banner if triggered -->
+          <div id="escalationBanner" class="alert alert-warning hidden">
+            <h4>⚠️ MANDATORY HUMAN ESCALATION (Requirement F7)</h4>
+            <p id="escalationReasonText"></p>
+          </div>
+
+          <!-- Main Determination Header -->
+          <div class="determination-header">
+            <div>
+              <span class="action-tag" id="routingActionTag">assign-to-entity</span>
+              <h3 id="targetRegulatorTitle">SEBI</h3>
+            </div>
+            <div class="timeline-badge" id="timelineBadge">Timeline: 21 Days</div>
+          </div>
+
+          <div class="field-group">
+            <label>Responsible Target Entity:</label>
+            <p id="targetEntityText" class="value-highlight"></p>
+          </div>
+
+          <div class="field-group">
+            <label>Statutory Basis & Justification:</label>
+            <p id="justificationText" class="justification-box"></p>
+          </div>
+
+          <!-- Grounded Citations -->
+          <div class="field-group">
+            <label>Retrieved Statutory Citations (Requirement A3 Grounding):</label>
+            <div id="citationsContainer" class="citations-container"></div>
+          </div>
+
+          <!-- Agent Trace & Telemetry -->
+          <div class="trace-section">
+            <h4>Multi-Agent Step Trace & Telemetry (Requirement D5)</h4>
+            <div class="telemetry-stats">
+              <span><strong>Total Latency:</strong> <span id="telemetryLatency"></span></span>
+              <span><strong>Tokens:</strong> <span id="telemetryTokens"></span></span>
+              <span><strong>Cost:</strong> <span id="telemetryCost"></span></span>
+              <span><strong>Prompt Version:</strong> <span id="telemetryPrompt"></span></span>
+            </div>
+            <div id="stepTracesContainer" class="steps-container"></div>
+          </div>
+
+          <!-- Caller Feedback (Requirement L6) -->
+          <div class="feedback-card">
+            <h4>Grievance Officer / Caller Feedback (Requirement L6)</h4>
+            <p class="small-text">Mark whether the routing determination and evidence citation were satisfactory.</p>
+            <div class="feedback-actions">
+              <button class="btn btn-sm btn-success" onclick="sendFeedback(true)">👍 Satisfactory</button>
+              <button class="btn btn-sm btn-danger" onclick="sendFeedback(false)">👎 Unsatisfactory</button>
+              <input type="text" id="feedbackReason" placeholder="Optional feedback comment..." class="feedback-input">
+            </div>
+            <p id="feedbackAck" class="feedback-ack hidden"></p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>UE24AM342AA5 ML System Design & AgentOps • Project 12 • SEBI & RBI Investor Protection</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

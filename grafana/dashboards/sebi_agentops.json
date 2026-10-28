@@ -1,0 +1,71 @@
+{
+  "title": "Securities Grievance Routing - AgentOps Dashboard",
+  "uid": "sebi-grievance-ops",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1, "type": "stat", "title": "Total Agent Runs",
+      "gridPos": {"x":0,"y":0,"w":4,"h":4},
+      "targets": [{"expr": "sum(agent_runs_total)", "legendFormat": "Runs"}],
+      "options": {"colorMode": "value", "graphMode": "area"}
+    },
+    {
+      "id": 2, "type": "stat", "title": "p95 Latency (s)",
+      "gridPos": {"x":4,"y":0,"w":4,"h":4},
+      "targets": [{"expr": "histogram_quantile(0.95, agent_run_duration_seconds_bucket)", "legendFormat": "p95"}],
+      "options": {"colorMode": "value", "thresholds": {"steps":[{"value":0,"color":"green"},{"value":2,"color":"yellow"},{"value":4,"color":"red"}]}}
+    },
+    {
+      "id": 3, "type": "stat", "title": "Circuit Breaker State",
+      "gridPos": {"x":8,"y":0,"w":4,"h":4},
+      "targets": [{"expr": "circuit_breaker_state", "legendFormat": "State (0=Closed,1=Half,2=Open)"}]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Corpus Chunks",
+      "gridPos": {"x":12,"y":0,"w":4,"h":4},
+      "targets": [{"expr": "corpus_chunks_total", "legendFormat": "Chunks"}]
+    },
+    {
+      "id": 5, "type": "stat", "title": "Quarantined Records",
+      "gridPos": {"x":16,"y":0,"w":4,"h":4},
+      "targets": [{"expr": "sum(quarantine_records_total)", "legendFormat": "Quarantined"}]
+    },
+    {
+      "id": 6, "type": "stat", "title": "Rate Limit Hits",
+      "gridPos": {"x":20,"y":0,"w":4,"h":4},
+      "targets": [{"expr": "sum(rate_limit_exceeded_total)", "legendFormat": "Rate Hits"}]
+    },
+    {
+      "id": 7, "type": "graph", "title": "Runs by Routing Action",
+      "gridPos": {"x":0,"y":4,"w":12,"h":8},
+      "targets": [{"expr": "sum by (action) (agent_runs_total)", "legendFormat": "{{action}}"}]
+    },
+    {
+      "id": 8, "type": "graph", "title": "p50 / p95 / p99 Latency Over Time",
+      "gridPos": {"x":12,"y":4,"w":12,"h":8},
+      "targets": [
+        {"expr": "histogram_quantile(0.50, agent_run_duration_seconds_bucket)", "legendFormat": "p50"},
+        {"expr": "histogram_quantile(0.95, agent_run_duration_seconds_bucket)", "legendFormat": "p95"},
+        {"expr": "histogram_quantile(0.99, agent_run_duration_seconds_bucket)", "legendFormat": "p99"}
+      ]
+    },
+    {
+      "id": 9, "type": "graph", "title": "Cache Hit Rate (Query / Run)",
+      "gridPos": {"x":0,"y":12,"w":12,"h":6},
+      "targets": [
+        {"expr": "sum(cache_hits_total{tier='query'}) / (sum(cache_hits_total{tier='query'}) + sum(cache_misses_total{tier='query'}))", "legendFormat": "Query Hit Rate"},
+        {"expr": "sum(cache_hits_total{tier='run'}) / (sum(cache_hits_total{tier='run'}) + sum(cache_misses_total{tier='run'}))", "legendFormat": "Run Hit Rate"}
+      ]
+    },
+    {
+      "id": 10, "type": "graph", "title": "Verification Passes vs Failures",
+      "gridPos": {"x":12,"y":12,"w":12,"h":6},
+      "targets": [
+        {"expr": "sum(verification_success_total)", "legendFormat": "Verified"},
+        {"expr": "sum(verification_failures_total)", "legendFormat": "Failed"}
+      ]
+    }
+  ]
+}

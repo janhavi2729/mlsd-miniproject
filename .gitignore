@@ -1,0 +1,14 @@
+# Git ignore for Securities Grievance Routing Service
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+data/index/
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/

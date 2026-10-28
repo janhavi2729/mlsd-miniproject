@@ -1,0 +1,31 @@
+[DOCUMENT: Cross-Regulatory Framework and Inter-Agency Referral Guidelines]
+[DOCUMENT_ID: INTER-REG-GUIDELINES-2023]
+[LAST_UPDATED: 2023-12-01]
+[REGULATORS: SEBI, RBI, IRDAI, PFRDA, MCA]
+[STATUS: ACTIVE]
+
+CLAUSE CROSS-REG-01: Insurance Sector Jurisdiction (IRDAI)
+Grievances related to life insurance policies, term insurance, health insurance, unit linked insurance plans (ULIP insurance portion / mortality charges / mis-selling), motor and property insurance fall exclusively under the Insurance Regulatory and Development Authority of India (IRDAI) and the Insurance Ombudsman Scheme, 2017.
+- Regulated Entities: Life and General Insurance Companies, TPA (Third Party Administrators), Insurance Web Aggregators, Insurance Brokers.
+- Redressal Mechanism: Complainant must approach the insurer's Grievance Redressal Officer (GRO). If unresolved within 15 days, escalate to IRDAI Bima Bharosa portal (https://bimabharosa.irdai.gov.in) or Insurance Ombudsman.
+- SEBI Action: SEBI does not have jurisdiction over insurance contracts. Complaints submitted to SEBI regarding insurance policies must be designated as 'refer-to-other-regulator' (IRDAI).
+
+CLAUSE CROSS-REG-02: Pension Schemes Jurisdiction (PFRDA)
+Grievances related to National Pension System (NPS), Atal Pension Yojana (APY), Permanent Retirement Account Number (PRAN) generation, Tier I and Tier II NPS contributions, and annuity service provider onboarding fall under the Pension Fund Regulatory and Development Authority (PFRDA) Regulations, 2015.
+- Regulated Entities: Central Recordkeeping Agencies (CRAs such as Protean/KFintech), Pension Funds, Points of Presence (POPs), Trustee Bank.
+- Redressal Mechanism: Online via PFRDA Central Grievance Management System (CGMS) on CRA website (https://cra-nsdl.com or https://npscra.nsdl.co.in).
+- SEBI Action: Complaints concerning NPS/pension accounts submitted to SEBI must be designated as 'refer-to-other-regulator' (PFRDA).
+
+CLAUSE CROSS-REG-03: Corporate Affairs & Unlisted Companies (MCA)
+Grievances regarding unlisted private limited or unlisted public companies, corporate registrar filings, Director Identification Number (DIN), corporate insolvency, or fraudulent deposit collection by unlisted private shell companies fall under the Ministry of Corporate Affairs (MCA) and Registrar of Companies (ROC) under the Companies Act, 2013.
+- Portal: MCA21 Investor Services (https://www.mca.gov.in).
+- SEBI Action: If a company is unlisted and not issuing public debentures, SEBI lacks jurisdiction; complaint is designated as 'refer-to-other-regulator' (MCA) or 'not-maintainable'.
+
+CLAUSE CROSS-REG-04: Split-Jurisdiction and Multi-Regulator Disputes (Mandatory Escalation)
+A grievance involves a 'Split-Jurisdiction' when the underlying transaction spans the statutory boundaries of more than one regulator, and fault or liability cannot be resolved by examining one entity's records alone.
+Examples include:
+(a) IPO ASBA Bidding: Complainant alleges bank blocked funds for IPO but broker failed to upload bid to stock exchange, or bank failed to unblock funds after registrar rejected allotment. This involves both RBI (SCSB bank branch) and SEBI (syndicate broker / RTA).
+(b) Demat Account Linked Payment Transfer: Complainant transferred funds from bank via net-banking / payment gateway to broker's trading ledger; bank debit succeeded but broker ledger shows zero credit, and both entities point fingers at the other.
+(c) Mis-selling of hybrid ULIP or dual-registered banking-broking entity (e.g. Bank RM selling portfolio PMS or high-risk derivatives inside branch).
+Mandatory Escalation Protocol:
+When a complaint exhibits split-jurisdiction across regulators (e.g. SEBI + RBI or SEBI + IRDAI), or the entity type cannot be reliably matched within a single regulatory corpus, the system MUST NOT issue an automated single-party determination. The system MUST set routing to 'escalate-to-human' with detailed split analysis so that a senior Grievance Redressal Officer may initiate inter-regulatory coordination through the Sub-Committee of the Financial Stability and Development Council (FSDC).

@@ -1,0 +1,42 @@
+[DOCUMENT: SEBI Master Circular on Investor Grievance Redressal Mechanism]
+[CIRCULAR_ID: SEBI/HO/OIAE/OIAE_IAD-1/P/CIR/2023/181]
+[LAST_UPDATED: 2023-11-07]
+[REGULATOR: SEBI]
+[STATUS: ACTIVE]
+
+CLAUSE SEBI-CIR-01: Scope of SEBI Complaints Redress System (SCORES 2.0)
+SEBI operates the centralized web-based investor grievance redressal platform known as SCORES (SEBI Complaints Redress System). SCORES covers grievances arising out of activities in the securities market against entities registered with SEBI. Registered entities include listed companies, stock brokers, sub-brokers, depository participants (NSDL, CDSL), mutual fund asset management companies (AMCs), registrars and share transfer agents (RTAs), portfolio managers, alternative investment funds (AIFs), research analysts, investment advisers, and credit rating agencies.
+
+CLAUSE SEBI-CIR-02: Categorization of Securities Market Intermediaries
+All grievances submitted on SCORES are classified according to the responsible intermediary domain:
+(a) Stock Broker: Issues concerning trade execution, contract notes, delivery of securities, unauthorized transactions in trading account, demat-trading account linking, margin call adjustments, brokerage charges, non-receipt of funds/securities payout.
+(b) Mutual Fund: Non-receipt of repurchase/redemption proceeds, non-receipt of dividend/IDCW, delay in dispatch of statement of accounts, unauthorized redemption or switch, dispute in NAV allocation.
+(c) Depository Participant (DP): Non-credit of demat shares, unauthorized debit from demat account, failure in processing Delivery Instruction Slip (DIS), rejection of pledge/unpledge requests, delay in dematerialization of physical shares.
+(d) Registrar and Share Transfer Agent (RTA): Non-receipt of refund orders in IPO, non-credit of IPO shares, non-receipt of dividend warrants, non-registration of transfer of shares, transmission of shares, non-issuance of duplicate share certificates.
+(e) Listed Company: Corporate actions, dividend non-payment on equity shares, non-receipt of annual reports, voting right disputes, debenture redemption disputes.
+
+CLAUSE SEBI-CIR-03: Redressal Timelines and Resolution SLA
+Under SCORES 2.0, the resolution timeline for investor complaints is strictly enforced:
+(a) First Tier (Designated Intermediary/Entity): The concerned listed company or registered intermediary shall resolve the complaint and submit an Action Taken Report (ATR) within 21 calendar days from the date of receipt of the complaint.
+(b) Second Tier (First Review by Designated Body): If the investor is dissatisfied with the ATR, the investor may seek a review within 15 calendar days of receipt of the ATR. The Designated Body (Stock Exchange or Depositories Association) shall review the redressal within 10 calendar days.
+(c) Third Tier (Second Review by SEBI): If the investor remains aggrieved after review by the Designated Body, SEBI may take up the complaint for second review and initiate regulatory enforcement action where appropriate.
+
+CLAUSE SEBI-CIR-04: Non-Maintainable Grievances Under SEBI Framework
+The following categories of complaints are NOT maintainable under SEBI's grievance redressal framework:
+(a) Matters pending before any court of law, tribunal, arbitrator, or consumer dispute forum (sub-judice).
+(b) Complaints against unregistered entities, fake investment schemes, or entities not governed by SEBI Acts and Regulations.
+(c) Claims seeking compensation for speculative market losses or price movement of securities.
+(d) Disputes between business partners, promoters, or corporate commercial transactions not related to retail investor servicing.
+(e) Grievances regarding banking products, bank fixed deposits, savings accounts, credit cards, or bank payment failures falling under the Reserve Bank of India (RBI).
+(f) Grievances regarding insurance policies (life, general, health) falling under the Insurance Regulatory and Development Authority of India (IRDAI).
+(g) Grievances regarding pension products (NPS, APY) falling under PFRDA.
+Where a complaint is not maintainable, SEBI shall reject the complaint or refer the complainant to the competent authority with cited justification within 7 calendar days.
+
+CLAUSE SEBI-CIR-05: Specific Servicing Obligations of Stock Brokers
+(a) Payout of Funds and Securities: Stock brokers must ensure that the payout of funds and securities is completed within 24 hours (or T+1 settlement cycle) of receipt of payout from the clearing corporation.
+(b) Contract Notes: Contract notes for all executed transactions must be issued to the client within 24 hours of trade execution in physical or electronically digitally signed format.
+(c) Settlement of Accounts: Running account of client funds and securities must be settled on the first Friday of every month or quarter as per client mandate. Delay in settlement attracts penalty.
+(d) Unauthorized Trades: In case of complaint alleging unauthorized trades, the broker must furnish voice recording, IP logs, or authenticated order logs within 7 working days.
+
+CLAUSE SEBI-CIR-06: Online Dispute Resolution (ODR) Mechanism
+SEBI Master Circular on ODR (SEBI/HO/OODR/ODR_IAD-1/P/CIR/2023/131) mandates that if an investor complaint is not redressed within the designated 21 calendar days through SCORES, the investor may escalate the dispute to the SMART ODR Portal (Securities Market Approach for Resolution Through ODR) for online conciliation and arbitration. Conciliation must conclude within 21 days; arbitration within 30 days.

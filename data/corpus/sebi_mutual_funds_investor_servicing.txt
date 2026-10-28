@@ -1,0 +1,32 @@
+[DOCUMENT: SEBI (Mutual Funds) Regulations 1996 - Chapter on Investor Servicing and Redressal]
+[REGULATION_REF: SEBI (Mutual Funds) Regulations, 1996 as amended]
+[LAST_UPDATED: 2024-01-15]
+[REGULATOR: SEBI]
+[STATUS: ACTIVE]
+
+CLAUSE SEBI-MF-REG-25: General Obligations of Asset Management Company (AMC)
+Every Asset Management Company (AMC) registered with the Board shall:
+(1) Maintain the highest standards of integrity, due diligence, and retail investor servicing in the management of all mutual fund schemes.
+(2) Establish a dedicated investor relations cell to receive, investigate, and redress all grievances received from unitholders within specified statutory timelines.
+(3) Appoint an independent Compliance Officer who shall report directly to the trustees and monitor resolution of investor complaints and statutory reporting to SEBI.
+
+CLAUSE SEBI-MF-REG-53A: Dispatch of Dividend and IDCW Warrants
+Every mutual fund and Asset Management Company shall dispatch to unitholders the dividend payments or Income Distribution cum Capital Withdrawal (IDCW) warrants within 7 working days from the record date of declaration of dividend. In the event of failure to dispatch dividend warrants within the stipulated period of 7 working days, the AMC shall be liable to pay interest to the unitholders at the rate of 15% per annum for the period of delay.
+
+CLAUSE SEBI-MF-REG-53B: Dispatch of Redemption and Repurchase Proceeds
+(1) The mutual fund and AMC shall dispatch the redemption or repurchase proceeds to the unitholder within 3 working days from the date of acceptance of a valid redemption request at any official point of acceptance.
+(2) In cases of exceptional schemes investing at least 80% of assets in overseas securities, the timeline for redemption payout is 5 working days due to foreign exchange settlement cycles.
+(3) Failure to dispatch redemption proceeds within 3 working days: The AMC shall be liable to pay interest to the unitholder at the rate of 15% per annum for the period of such delay, paid from AMC's own operational funds (not charged to scheme NAV).
+(4) In the event of banking network failure causing redemption payout bounce, AMC must reissue payment through alternate electronic transfer (NEFT/RTGS/IMPS) within 24 hours of receiving the bounce notification.
+
+CLAUSE SEBI-MF-REG-53C: Statements of Account and Portfolio Disclosure
+(1) Mutual fund AMCs must issue a Consolidated Account Statement (CAS) for each calendar month to unitholders in whose folios transactions have taken place, on or before the 15th day of the succeeding month.
+(2) For unitholders holding units in dematerialized form, the depository participant shall provide the statement of holding as per depository regulations.
+(3) Half-yearly portfolio statements must be sent electronically within 10 days of the close of each half-year (March 31 and September 30).
+
+CLAUSE SEBI-MF-REG-53D: Transfer and Transmission of Mutual Fund Units
+Every mutual fund and AMC shall complete the process of transfer of units or transmission of units in favour of surviving nominee or legal heir within 30 days from the date of receipt of valid transfer/transmission documents along with death certificate and KYC verification.
+
+CLAUSE SEBI-MF-REG-53E: SIP, STP, and SWP Servicing and Cancellation
+(1) Systematic Investment Plans (SIP), Systematic Transfer Plans (STP), and Systematic Withdrawal Plans (SWP) modification or cancellation requests must be processed within 10 working days of submission by the investor.
+(2) Erroneous deductions due to AMC failure following an acknowledged cancellation request must be refunded within 3 working days with statutory compensation.

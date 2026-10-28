@@ -1,0 +1,119 @@
+version: '3.8'
+
+# Securities Investor Grievance Routing Service (SEBI / RBI)
+# Requirement D3: At least 4 services under Docker Compose with declared dependencies & health checks.
+# Requirement A7: Scalable worker architecture (docker compose up --scale agent-worker=3)
+
+services:
+  # 1. API Gateway & Ingestion Boundary Service
+  api-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sebi_api_service
+    command: ["python", "-m", "src.api.main"]
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=production
+      - HOST=0.0.0.0
+      - PORT=8000
+      - REDIS_URL=redis://redis:6379/0
+      - PROMETHEUS_METRICS_ENABLED=true
+      - OPENTELEMETRY_EXPORTER_ENDPOINT=http://jaeger:4317
+      - LLM_PROVIDER=stub
+      - SLO_P95_SECONDS=4.0
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  # 2. Asynchronous Multi-Agent Worker (Requirement A7: scalable worker tier)
+  agent-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "-m", "src.queue.task_runner"]
+    environment:
+      - APP_ENV=production
+      - REDIS_URL=redis://redis:6379/0
+      - LLM_PROVIDER=stub
+      - ACTIVE_PROMPT_VERSION=v2.0
+      - MAX_AGENT_STEPS=6
+      - MAX_TOOL_CALLS=8
+    depends_on:
+      redis:
+        condition: service_healthy
+      api-service:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # 3. Redis Queue, State Store & In-Memory Cache (Requirement D7)
+  redis:
+    image: redis:7.2-alpine
+    container_name: sebi_redis_broker
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  # 4. Prometheus Metrics Scraper & Time-Series Engine (Requirement D5)
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: sebi_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    depends_on:
+      api-service:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # 5. Grafana Observability Dashboard (Requirement D5)
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: sebi_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  # 6. Jaeger OpenTelemetry Distributed Tracing Collector (Requirement D5)
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    container_name: sebi_jaeger
+    ports:
+      - "16686:16686" # Web UI
+      - "4317:4317"   # OTLP gRPC receiver
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  prometheus_data:

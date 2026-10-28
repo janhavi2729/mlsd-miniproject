@@ -1,0 +1,48 @@
+[DOCUMENT: Reserve Bank of India - Integrated Ombudsman Scheme, 2021]
+[SCHEME_REF: RBI Notification CEPD. PRGF. No. S870/13.01.001/2021-2022]
+[EFFECTIVE_DATE: 2021-11-12]
+[REGULATOR: RBI]
+[STATUS: ACTIVE]
+
+CLAUSE RBI-IOS-01: Objective and Scope of the Scheme
+The Reserve Bank - Integrated Ombudsman Scheme, 2021 integrates the Banking Ombudsman Scheme, 2006, the Ombudsman Scheme for Non-Banking Financial Companies, 2018, and the Ombudsman Scheme for Digital Transactions, 2019 into a single unified framework. The scheme provides a cost-free, expeditious, and impartial grievance redressal mechanism for deficiency in service provided by Regulated Entities (REs) including Commercial Banks, Regional Rural Banks, Scheduled Primary Urban Co-operative Banks, Non-Banking Financial Companies (NBFCs), and Payment System Participants.
+
+CLAUSE RBI-IOS-02: Definition of Regulated Entities (RE)
+Regulated Entities covered under the RBI Ombudsman Scheme include:
+(a) All Commercial Banks (public sector, private sector, foreign banks) having branches or mobile banking apps in India.
+(b) Urban Co-operative Banks and State Co-operative Banks with deposit size exceeding Rs. 50 crore.
+(c) Non-Banking Financial Companies (NBFCs) registered with RBI which are authorized to accept deposits or have customer interface with assets exceeding Rs. 100 crore.
+(d) System Participants and Payment System Providers (including unified payments interface switches, prepaid payment instrument issuers, and payment aggregators).
+
+CLAUSE RBI-IOS-08A: Grounds of Complaint - Deposit Accounts and Fixed Deposits
+A customer may file a complaint with the RBI Ombudsman alleging deficiency in service concerning deposit accounts and fixed deposits on any of the following grounds:
+(1) Fixed Deposits / Term Deposits Interest Deficiency: Failure to credit promised interest, crediting interest at a lower rate than contracted or agreed in bank mobile application/website, or non-observance of RBI directives on interest rates on Fixed Deposits and Term Deposits.
+(2) Deposit Repayment and Premature Withdrawal: Inordinate delay or refusal in repayment of deposit maturity proceeds of fixed deposits, recurring deposits, or term deposits, or failure to execute instructions for premature withdrawal or renewal.
+(3) Deposit Charges and Penalty Levies: Levying of unauthorized penalty charges for non-maintenance of minimum balance or debiting charges without prior notification mandated by RBI Fair Practices Code.
+(4) Inordinate delay in collection or payment of cheques, drafts, bills, or electronic dividend warrants credited into bank accounts.
+Note: Fixed deposits, recurring deposits, and savings accounts offered by commercial banks are purely banking products governed under the Banking Regulation Act, 1949 and RBI regulations. They do NOT fall under SEBI jurisdiction, even when booked through digital banking portals, investment dashboards, or fintech aggregator apps.
+
+CLAUSE RBI-IOS-08B: Grounds of Complaint - Digital Transactions and Payment Gateways
+A customer may lodge a complaint with the RBI Ombudsman for:
+(1) Unauthorized electronic fund transfers, net-banking transactions, or mobile banking fraudulent debits where customer notified bank promptly.
+(2) Failed ATM or Cash Recycler transactions where account was debited but cash was not dispensed, and bank failed to auto-reverse funds within T+5 calendar days (compensation of Rs. 100 per day of delay under RBI Harmonisation Circular).
+(3) UPI, IMPS, or NEFT transaction failures where funds debited from remitter bank were neither credited to beneficiary nor reversed to remitter within prescribed settlement timelines.
+(4) ASBA (Application Supported by Blocked Amount) failures occurring at bank payment branch: Failure to unblock surplus funds or delay in releasing lien on customer bank balance after IPO share allotment.
+
+CLAUSE RBI-IOS-08C: Grounds of Complaint - Credit Cards, Debit Cards, and Loans
+Deficiencies concerning credit cards, debit cards, prepaid cards, or loans include:
+(1) Issuance of unsolicited cards or unsolicited credit enhancement.
+(2) Inaccurate or misleading interest rates charged on personal loans, auto loans, or credit card outstandings.
+(3) Reporting inaccurate default status to Credit Information Companies (CIBIL, Experian, Equifax) without statutory notice.
+
+CLAUSE RBI-IOS-09: Procedure for Filing Complaints with the RBI Ombudsman
+(1) Prerequisite: The complainant must first lodge a formal complaint with the regulated entity (Bank/NBFC). If the bank fails to redress the grievance within 30 days, or rejects the complaint, or the complainant is not satisfied with the reply, a complaint may be lodged with the RBI Ombudsman.
+(2) Filing Medium: Complaints can be filed online through the RBI Centralised Receipt and Processing Centre (CRPC) portal at https://cms.rbi.org.in, or by email to crpc@rbi.org.in, or by post to CRPC, 4th Floor, Sector 17, Chandigarh, 160017.
+(3) Resolution SLA: The Ombudsman conducts conciliation or issues an Award within 30 to 60 days of submission of complete records.
+
+CLAUSE RBI-IOS-10: Non-Maintainable Complaints under RBI Scheme
+The RBI Ombudsman shall not entertain complaints where:
+(a) The grievance has already been adjudicated or is pending adjudication before any court, tribunal, or arbitrator.
+(b) The complaint pertains to commercial disputes between businesses, employment matters, or general bank pricing policies.
+(c) The complaint pertains to securities market activities (stocks, equity shares, mutual fund units, demat depository accounts) which are under the jurisdiction of SEBI.
+(d) The complaint is lodged after expiry of one year from the date of cause of action.
