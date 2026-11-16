@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from src.contracts.complaint import ComplaintSubmission, validate_complaint
 from src.contracts.determination import RoutingDetermination
+from src.llm.client import llm_client
 from src.llm.stub_provider import stub_llm
 from src.observability.logging import get_logger, set_request_context
 from src.observability.metrics import metrics_collector
@@ -168,6 +169,7 @@ def handle_get_health() -> Tuple[int, Dict[str, Any]]:
         "service": "securities-investor-grievance-routing",
         "uptime_seconds": round(uptime, 1),
         "circuit_breaker": cb_state,
+        "llm": llm_client.describe(),
         "vector_index_chunks": chunks_count,
         "cache_stats": global_cache.get_cache_stats(),
         "quarantined_records": quarantine_store.count(),

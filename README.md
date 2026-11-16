@@ -100,6 +100,42 @@ docker compose up --build
 docker compose up --scale agent-worker=3
 ```
 
+
+### Using a Real LLM (Gemini / OpenAI / OpenAI-compatible)
+By default `LLM_PROVIDER=stub`: a deterministic keyword-rule provider used for offline demos, CI and
+load tests. It is **not** a language model. To route complaints with a real model, copy `.env.example`
+to `.env` (loaded automatically, never committed) and set:
+
+```bash
+# Google Gemini (free key: https://aistudio.google.com/apikey)
+LLM_PROVIDER=gemini
+LLM_API_KEY=<your key>
+LLM_MODEL=            # empty = gemini-flash-latest
+
+# OpenAI
+LLM_PROVIDER=openai
+LLM_API_KEY=<your key>
+LLM_MODEL=            # empty = gpt-4o-mini
+
+# Any OpenAI-compatible API, e.g. Groq or a local Ollama (no key needed)
+LLM_PROVIDER=openai
+LLM_BASE_URL=http://localhost:11434/v1
+LLM_MODEL=llama3.1
+```
+
+How it works (`src/llm/client.py`, `src/llm/providers.py`, `src/llm/prompts.py`):
+- Both agents send the versioned system prompt (`v1.0` / `v2.0`) plus a shared JSON output contract,
+  with temperature 0 and JSON mode. The complaint is wrapped in `<complaint>` tags and marked as untrusted data.
+- The routing agent receives the retrieved passages with their `clause_id`s and must cite one of them.
+  The existing `EvidenceVerifier` then checks the citation against the corpus, and an invented clause escalates to a human.
+- Model output is normalized: an unknown `routing_action` fails safe to `escalate-to-human`.
+- 429 / 5xx / timeouts / malformed JSON raise retryable errors (retry + circuit breaker apply); auth errors do not retry.
+- Real token counts are recorded in the cost ledger. Set `LLM_COST_PER_1M_INPUT` / `LLM_COST_PER_1M_OUTPUT` to your model's price.
+- `GET /health` reports the active provider and model. The eval prints it too.
+- If a real provider is configured without a key, the service logs a warning and uses the stub.
+
+Unit tests always force the stub, so they never call a paid API.
+
 ---
 
 ## REST API
@@ -121,7 +157,7 @@ docker compose up --scale agent-worker=3
 ## Running Tests
 
 ```bash
-# Full unit + integration test suite (39 tests)
+# Full unit + integration test suite (44 tests)
 python -m unittest tests.test_suite -v
 
 # Evaluation suite (21 scenarios × 2 prompt variants — L2, L3)

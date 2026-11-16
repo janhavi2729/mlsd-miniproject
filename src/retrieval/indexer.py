@@ -208,8 +208,11 @@ class VectorIndex:
         return None
 
 
-# Global index instance
+# Global index instance. data/index/ is gitignored, so build it on first use in a fresh
+# checkout; otherwise clause lookups fail and every run escalates on verification failure.
 vector_index = VectorIndex()
+if not vector_index.chunks and os.path.isdir(settings.CORPUS_DIR):
+    vector_index.build_or_update()
 
 
 if __name__ == "__main__":

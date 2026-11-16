@@ -213,6 +213,17 @@ if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     eval_file = os.path.join(base_dir, "data", "eval_cases.json")
 
+    # The report prints check marks; Windows consoles default to cp1252 and would crash.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+    from src.llm.client import llm_client
+    llm_info = llm_client.describe()
+    print(f"\n>>> LLM provider: {llm_info['active_provider']} | model: {llm_info['model']}")
+    if llm_info["active_provider"] == "stub":
+        print(">>> NOTE: stub = deterministic keyword rules, not a language model. "
+              "Set LLM_PROVIDER/LLM_API_KEY to evaluate a real model.")
+
     # Run default suite
     run_evaluation_suite(eval_file, prompt_version="v2.0")
 

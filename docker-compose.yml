@@ -21,7 +21,10 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - PROMETHEUS_METRICS_ENABLED=true
       - OPENTELEMETRY_EXPORTER_ENDPOINT=http://jaeger:4317
-      - LLM_PROVIDER=stub
+      - LLM_PROVIDER=${LLM_PROVIDER:-stub}
+      - LLM_API_KEY=${LLM_API_KEY:-}
+      - LLM_MODEL=${LLM_MODEL:-}
+      - LLM_BASE_URL=${LLM_BASE_URL:-}
       - SLO_P95_SECONDS=4.0
     depends_on:
       redis:
@@ -43,7 +46,10 @@ services:
     environment:
       - APP_ENV=production
       - REDIS_URL=redis://redis:6379/0
-      - LLM_PROVIDER=stub
+      - LLM_PROVIDER=${LLM_PROVIDER:-stub}
+      - LLM_API_KEY=${LLM_API_KEY:-}
+      - LLM_MODEL=${LLM_MODEL:-}
+      - LLM_BASE_URL=${LLM_BASE_URL:-}
       - ACTIVE_PROMPT_VERSION=v2.0
       - MAX_AGENT_STEPS=6
       - MAX_TOOL_CALLS=8

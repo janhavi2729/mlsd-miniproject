@@ -4,6 +4,24 @@ import os
 from typing import Optional
 
 
+def _load_dotenv(path: str) -> None:
+    """Minimal stdlib .env loader. Real environment variables always take precedence."""
+    if not os.path.isfile(path):
+        return
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            key, value = key.strip(), value.strip().strip('"').strip("'")
+            if key and key not in os.environ:
+                os.environ[key] = value
+
+
+_load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env"))
+
+
 class Settings:
     def __init__(self):
         # Service configuration
@@ -25,6 +43,13 @@ class Settings:
         self.LLM_MODEL: str = os.getenv("LLM_MODEL", "stub-evaluator-v2")
         self.LLM_TIMEOUT_SECONDS: float = float(os.getenv("LLM_TIMEOUT_SECONDS", "10.0"))
         self.LLM_MAX_RETRIES: int = int(os.getenv("LLM_MAX_RETRIES", "3"))
+        # Optional: OpenAI-compatible endpoint (Groq, OpenRouter, local Ollama at http://localhost:11434/v1)
+        self.LLM_BASE_URL: Optional[str] = os.getenv("LLM_BASE_URL") or None
+        # Client-side cap on LLM requests per minute (0 = unlimited). Free API tiers allow ~10-15 RPM.
+        self.LLM_MAX_RPM: float = float(os.getenv("LLM_MAX_RPM", "0"))
+        # Per-1M-token prices used by the cost ledger (Requirement L5); set them to your model's list price
+        self.LLM_COST_PER_1M_INPUT: float = float(os.getenv("LLM_COST_PER_1M_INPUT", "0.15"))
+        self.LLM_COST_PER_1M_OUTPUT: float = float(os.getenv("LLM_COST_PER_1M_OUTPUT", "0.60"))
 
         # Agent Loop Limits (Requirement A1)
         self.MAX_AGENT_STEPS: int = int(os.getenv("MAX_AGENT_STEPS", "6"))

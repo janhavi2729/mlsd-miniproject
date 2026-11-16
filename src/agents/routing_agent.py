@@ -11,6 +11,7 @@ from src.contracts.determination import (
     DomainCategory,
     RoutingAction,
     RoutingDetermination,
+    TokenUsage,
 )
 from src.llm.client import llm_client
 from src.observability.logging import get_logger
@@ -142,6 +143,15 @@ class RoutingAgent:
 
         all_steps = (steps_list or []) + [step_trace]
 
+        # Aggregate per-step LLM usage into the run total (feeds cost metrics, Requirement L5)
+        step_usages = [s.tokens for s in all_steps if s.tokens is not None]
+        run_usage = TokenUsage(
+            prompt_tokens=sum(u.prompt_tokens for u in step_usages),
+            completion_tokens=sum(u.completion_tokens for u in step_usages),
+            total_tokens=sum(u.total_tokens for u in step_usages),
+            estimated_cost_usd=sum(u.estimated_cost_usd for u in step_usages),
+        )
+
         return RoutingDetermination(
             run_id=run_id,
             correlation_id=correlation_id,
@@ -158,6 +168,7 @@ class RoutingAgent:
             steps=all_steps,
             prompt_version=prompt_version,
             wall_clock_ms=sum(s.latency_ms for s in all_steps),
+            token_usage=run_usage,
         )
 
 

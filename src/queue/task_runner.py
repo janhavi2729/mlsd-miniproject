@@ -5,7 +5,7 @@ import enum
 import threading
 import time
 import uuid
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from src.agents.graph import multi_agent_graph
 from src.contracts.complaint import ComplaintSubmission

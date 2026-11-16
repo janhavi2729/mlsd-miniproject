@@ -10,6 +10,9 @@ import unittest
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PROJECT_ROOT)
 
+# Routing-behaviour tests assert the deterministic stub's outputs; never call a paid API from unit tests.
+os.environ["LLM_PROVIDER"] = "stub"
+
 from src.contracts.complaint import ComplaintSubmission, validate_complaint, ClaimedCategory
 from src.contracts.determination import Citation, RoutingAction, DomainCategory, RoutingDetermination
 from src.guardrails.prompt_injection import check_prompt_injection
@@ -388,6 +391,88 @@ class TestAPIRoutes(unittest.TestCase):
         self.assertEqual(resp["status"], "REJECTED_AT_INGESTION_BOUNDARY")
         self.assertIn("quarantine_id", resp)
         self.assertFalse(resp["agent_run_started"])
+
+
+class TestRealLLMAdapter(unittest.TestCase):
+    """Exercises the real-provider path (prompt building, JSON parsing, normalization) without network calls."""
+
+    def setUp(self):
+        from unittest import mock
+        from src.llm import client as client_mod
+        self.client_mod = client_mod
+        self.client = client_mod.LLMClient()
+        self.client.provider = "gemini"
+        self.client.model_name = "test-model"
+        self.client.use_real_llm = True
+        self.mock = mock
+
+    def test_parse_json_with_code_fence(self):
+        from src.llm.providers import parse_json_object
+        self.assertEqual(parse_json_object('```json\n{"a": 1}\n```'), {"a": 1})
+
+    def test_invalid_json_is_retryable(self):
+        from src.llm.providers import parse_json_object, LLMRetryableError
+        with self.assertRaises(LLMRetryableError):
+            parse_json_object("not json at all")
+
+    def test_triage_normalizes_model_output(self):
+        raw = {"instrument": "Bank FD", "primary_regulator": "rbi", "domain": "broker",
+               "is_split_jurisdiction": "false", "search_query": "RBI FD complaint"}
+        with self.mock.patch.object(self.client_mod, "call_provider", return_value=(raw, 120, 40)) as cp:
+            res = self.client.triage_complaint("My bank FD interest was not credited", "fixed_deposit",
+                                               "SBI", run_id="t1")
+        system_prompt = cp.call_args.kwargs["system"]
+        self.assertIn("JSON", system_prompt)
+        self.assertIn("<complaint>", cp.call_args.kwargs["user"])
+        self.assertEqual(res["primary_regulator"], "RBI")
+        self.assertEqual(res["domain"], "out-of-jurisdiction")  # non-SEBI regulator forces out-of-jurisdiction
+        self.assertFalse(res["is_split_jurisdiction"])
+        self.assertEqual(res["token_usage"].prompt_tokens, 120)
+        self.assertEqual(res["llm_provider"], "gemini")
+
+    def test_unknown_routing_action_escalates(self):
+        raw = {"routing_action": "approve-refund", "clause_id": "rbi-ios-08a", "timeline_days": "30"}
+        passages = [{"clause_id": "RBI-IOS-08A", "document_name": "rbi.txt", "text": "..."}]
+        with self.mock.patch.object(self.client_mod, "call_provider", return_value=(raw, 300, 90)):
+            res = self.client.adjudicate_and_route({}, passages, "complaint", run_id="t2")
+        self.assertEqual(res["routing_action"], "escalate-to-human")
+        self.assertTrue(res["requires_escalation"])
+        self.assertEqual(res["clause_id"], "RBI-IOS-08A")
+        self.assertEqual(res["document_name"], "rbi.txt")
+        self.assertEqual(res["timeline_days"], 30)
+
+    def test_transient_failures_do_not_exhaust_tool_budget(self):
+        """Retried provider errors must not count failed attempts' tool calls against MAX_TOOL_CALLS."""
+        from src.llm.stub_provider import stub_llm
+        real = stub_llm.generate_triage
+        calls = {"n": 0}
+
+        def flaky(*a, **k):
+            calls["n"] += 1
+            if calls["n"] <= 2:
+                raise ConnectionError("503 high demand")
+            return real(*a, **k)
+
+        submission = ComplaintSubmission(
+            complaint_text="I invested in a fixed deposit through my bank's app. The interest credited is lower than promised.",
+            complainant_name="Ramesh Kumar Sharma", complainant_email="ramesh.sharma@example.com",
+            complainant_phone="9876543210", entity_name="HDFC Bank Ltd", claimed_category="fixed_deposit",
+        )
+        with self.mock.patch.object(stub_llm, "generate_triage", side_effect=flaky):
+            det = multi_agent_graph.run(submission=submission, run_id="test_flaky_retry")
+        self.assertEqual(calls["n"], 3)
+        self.assertIsNone(det.escalation_reason)  # not the degraded fallback path
+        self.assertTrue(det.verification_passed)
+        self.assertEqual(det.routing_action.value, "refer-to-other-regulator")
+
+    def test_fail_switch_applies_to_real_provider(self):
+        from src.llm.stub_provider import stub_llm
+        stub_llm.set_fail_mode(True)
+        try:
+            with self.assertRaises(ConnectionError):
+                self.client.triage_complaint("text", "broker", "X", run_id="t3")
+        finally:
+            stub_llm.set_fail_mode(False)
 
 
 if __name__ == "__main__":

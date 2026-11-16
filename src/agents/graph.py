@@ -113,13 +113,21 @@ class MultiAgentGraph:
                 return det
 
             # Step 1: Execute Agent 1 (TriageAgent) with retry protection
-            triage_hand_off = execute_with_retry(
-                func=lambda: triage_agent.execute(
+            # Each retry attempt restarts from the same tool budget: tool calls made by an attempt
+            # that later failed on a provider error must not count against the loop bound (A1).
+            triage_budget_start = tools.tool_call_count
+
+            def _run_triage():
+                tools.tool_call_count = triage_budget_start
+                return triage_agent.execute(
                     submission=submission,
                     tools=tools,
                     run_id=active_run_id,
                     prompt_version=p_version,
-                ),
+                )
+
+            triage_hand_off = execute_with_retry(
+                func=_run_triage,
                 max_retries=settings.LLM_MAX_RETRIES,
                 step_name="triage_agent_execution",
             )
@@ -132,8 +140,11 @@ class MultiAgentGraph:
                 raise RuntimeError(f"Agent exceeded maximum tool call limit ({self.max_tool_calls})")
 
             # Step 3: Execute Agent 2 (RoutingAgent)
-            determination = execute_with_retry(
-                func=lambda: routing_agent.execute(
+            routing_budget_start = tools.tool_call_count
+
+            def _run_routing():
+                tools.tool_call_count = routing_budget_start
+                return routing_agent.execute(
                     submission=submission,
                     triage_hand_off=triage_hand_off,
                     tools=tools,
@@ -141,7 +152,10 @@ class MultiAgentGraph:
                     correlation_id=active_corr_id,
                     prompt_version=p_version,
                     steps_list=[triage_hand_off["step_trace"]],
-                ),
+                )
+
+            determination = execute_with_retry(
+                func=_run_routing,
                 max_retries=settings.LLM_MAX_RETRIES,
                 step_name="routing_agent_execution",
             )

@@ -1,15 +1,15 @@
 """Token and Cost Accounting (Requirement L5)."""
 
 import threading
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
+from src.config import settings
 from src.contracts.determination import TokenUsage
 
 
-# Benchmark cost rates (Standard production blend, e.g. Gemini 1.5 Flash / GPT-4o-mini equivalent):
-# Prompt: $0.15 per 1,000,000 tokens
-# Completion: $0.60 per 1,000,000 tokens
-COST_PER_PROMPT_TOKEN = 0.15 / 1_000_000
-COST_PER_COMPLETION_TOKEN = 0.60 / 1_000_000
+# Cost rates come from config (LLM_COST_PER_1M_INPUT / LLM_COST_PER_1M_OUTPUT).
+# Defaults: $0.15 / $0.60 per 1M tokens (GPT-4o-mini-class pricing).
+COST_PER_PROMPT_TOKEN = settings.LLM_COST_PER_1M_INPUT / 1_000_000
+COST_PER_COMPLETION_TOKEN = settings.LLM_COST_PER_1M_OUTPUT / 1_000_000
 
 
 class CostAccountingLedger:
