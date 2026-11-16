@@ -167,16 +167,28 @@ python -m eval.run_eval
 python tests/load_test_benchmark.py
 ```
 
-### Evaluation Results (Prompt v1.0 Baseline → v2.0 Production)
+### Evaluation Results — Real LLM (Gemini, Prompt v1.0 Baseline → v2.0 Production)
+Measured with `LLM_PROVIDER=gemini`, `LLM_MODEL=gemini-flash-lite-latest`, temperature 0,
+21 scenarios from `data/eval_cases.json` (`python -m eval.run_eval`, run on 2026-11-16).
+
 | Metric | Baseline v1.0 | Production v2.0 | Delta |
 |---|---|---|---|
-| Routing Accuracy | 95.2% | **100.0%** | +4.8% |
-| Faithfulness | 93.8% | **97.1%** | +3.3% |
-| Hallucination Rate | 6.2% | **2.9%** | −3.3% |
-| Context Relevance | 92.9% | **94.3%** | +1.4% |
+| Routing Accuracy | 81.0% | **100.0%** (21/21) | +19.1% |
+| Faithfulness | 84.5% | **97.9%** | +13.3% |
+| Hallucination Rate | 15.5% | **2.1%** | −13.3% |
+| Context Relevance | 90.0% | **94.3%** | +4.3% |
 | Groundedness | 100.0% | 100.0% | — |
 
 **Deliberate change:** Added explicit cross-regulator banking-vs-securities boundary rule and mandatory split-jurisdiction escalation in Prompt v2.0.
+
+Notes on interpreting these numbers:
+- During the run Gemini returned intermittent `503 high demand` errors. 3 of the 4 v1.0 misses were runs where
+  every retry hit a 503 and the service correctly degraded to `escalate-to-human`, so the true v1.0 gap is smaller than shown.
+- Routing accuracy is an exact match against the expected action. Faithfulness and hallucination rate are rule-based scores
+  derived from routing and cited-clause matches (see `eval/run_eval.py`), not LLM-judged.
+- Run time: ~6.5 minutes for 63 runs (126 LLM calls), throttled to `LLM_MAX_RPM=10` for the free tier.
+
+With the offline deterministic stub (`LLM_PROVIDER=stub`, keyword rules, no AI) the same suite scores 95.2% → 100.0%.
 
 ### SLO Benchmark (D6)
 - **Declared SLO:** p95 latency ≤ 4.0 seconds end-to-end
