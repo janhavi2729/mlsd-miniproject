@@ -101,6 +101,22 @@ docker compose up --scale agent-worker=3
 ```
 
 
+### Demo Setup: Turn On the AI (Gemini) in 1 Minute
+Create a file named `.env` in the project root (next to `README.md`) with exactly these lines,
+pasting the API key you received privately (never commit this file; it is in `.gitignore`):
+
+```
+LLM_PROVIDER=gemini
+LLM_API_KEY=<paste key here>
+LLM_MODEL=gemini-flash-lite-latest
+LLM_MAX_RPM=10
+LLM_TIMEOUT_SECONDS=30
+AGENT_TIMEOUT_SECONDS=60
+```
+
+Then start the service (`python -m src.api.main`) and open http://localhost:8000/health. It must show
+`"active_provider": "gemini"`. If it shows `"stub"`, the `.env` file is missing or the key is empty.
+
 ### Using a Real LLM (Gemini / OpenAI / OpenAI-compatible)
 By default `LLM_PROVIDER=stub`: a deterministic keyword-rule provider used for offline demos, CI and
 load tests. It is **not** a language model. To route complaints with a real model, copy `.env.example`
